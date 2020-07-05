@@ -1,4 +1,4 @@
-from app.model import db
+from app.plugin import db
 from app.model.company import Company
 
 

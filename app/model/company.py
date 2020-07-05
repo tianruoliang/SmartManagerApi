@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from app.model import db
+from app.plugin import db
 
 
 class Company(db.Model):

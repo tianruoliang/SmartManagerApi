@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from app.model import db
+from app.plugin import db
 
 
 class Goods(db.Model):
@@ -28,13 +28,16 @@ class GoodsIn(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     goods_id = db.Column(db.Integer, db.ForeignKey('goods.id'), nullable=False)
     number = db.Column(db.Integer, nullable=False)
+    record = db.Column(db.Text, nullable=True)
     create_time = db.Column(db.DateTime, nullable=False, default=datetime.now())
 
     def to_dict(self):
         return {
             "id": self.id,
             "goods": self.goods.to_dict(),
-            "number": self.number
+            "number": self.number,
+            "record": self.record,
+            "create_time": self.create_time
         }
 
 
@@ -44,11 +47,14 @@ class GoodsOut(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     goods_id = db.Column(db.Integer, db.ForeignKey('goods.id'), nullable=False)
     number = db.Column(db.Integer, nullable=False)
+    record = db.Column(db.Text, nullable=True)
     create_time = db.Column(db.DateTime, nullable=False, default=datetime.now())
 
     def to_dict(self):
         return {
             "id": self.id,
             "goods": self.goods.to_dict(),
-            "number": self.number
+            "number": self.number,
+            "record": self.record,
+            "create_time": self.create_time
         }

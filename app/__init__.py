@@ -6,7 +6,7 @@ from flask import Flask
 
 from app.api import bp
 from app.config import CONF_MAPPING
-from app.model import db
+from app.plugin import db
 from app.model.user import Role
 
 

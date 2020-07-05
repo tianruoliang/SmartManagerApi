@@ -1,4 +1,4 @@
-from flask_restx import Namespace, Resource, reqparse, fields, abort
+from flask_restx import Namespace, Resource, reqparse, fields
 
 from app.controller.user import get_user_list, create_user, get_user_detail, delete_user
 
@@ -7,6 +7,8 @@ ns = Namespace('user', description='User Resource')
 # parser
 create_parser = reqparse.RequestParser()
 create_parser.add_argument('username', type=str, help='姓名', location='json')
+create_parser.add_argument('account', type=str, help='账号', location='json')
+create_parser.add_argument('password', type=str, help='密码', location='json')
 create_parser.add_argument('phone', type=str, help='联系电话', location='json')
 create_parser.add_argument('role_id', help='职位ID', location='json')
 
@@ -30,7 +32,6 @@ class UserList(Resource):
     @ns.expect(create_parser)
     @ns.marshal_list_with(user_schema, code=201)
     def post(self):
-        abort(404, 'no')
         args = create_parser.parse_args()
         return create_user(args), 201
 

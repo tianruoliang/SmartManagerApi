@@ -1,5 +1,5 @@
-from app.model import db
-from app.model.user import User, Role
+from app.plugin import db
+from app.model.user import User
 
 
 def get_user_list():
