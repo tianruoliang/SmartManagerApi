@@ -1,13 +1,14 @@
+from flask_jwt_extended import jwt_required
 from flask_restx import Namespace, Resource, reqparse, fields
 
-from app.controller.user import get_user_list, create_user, get_user_detail, delete_user
+from app.controller.user import get_user_list, get_user_detail, delete_user
 
 ns = Namespace('user', description='User Resource')
 
 # parser
 create_parser = reqparse.RequestParser()
-create_parser.add_argument('username', type=str, help='姓名', location='json')
-create_parser.add_argument('account', type=str, help='账号', location='json')
+create_parser.add_argument('name', type=str, help='姓名', location='json')
+create_parser.add_argument('username', type=str, help='用户名', location='json')
 create_parser.add_argument('password', type=str, help='密码', location='json')
 create_parser.add_argument('phone', type=str, help='联系电话', location='json')
 create_parser.add_argument('role_id', help='职位ID', location='json')
@@ -15,6 +16,7 @@ create_parser.add_argument('role_id', help='职位ID', location='json')
 # schema
 user_schema = ns.model('User', {
     'id': fields.Integer,
+    'name': fields.String,
     'username': fields.String,
     'phone': fields.String,
     'role': fields.String,
@@ -24,16 +26,11 @@ user_schema = ns.model('User', {
 
 @ns.route('/')
 class UserList(Resource):
+    method_decorators = [jwt_required]
 
     @ns.marshal_list_with(user_schema)
     def get(self):
         return get_user_list()
-
-    @ns.expect(create_parser)
-    @ns.marshal_list_with(user_schema, code=201)
-    def post(self):
-        args = create_parser.parse_args()
-        return create_user(args), 201
 
 
 @ns.route('/<uid>')

@@ -1,4 +1,4 @@
-from app.model.user import Role
+from app.model.role import Role
 
 
 def get_role_list():

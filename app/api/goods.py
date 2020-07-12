@@ -1,3 +1,4 @@
+from flask_jwt_extended import jwt_required
 from flask_restx import Namespace, Resource, reqparse, fields
 
 from app.controller.goods import get_goods_list, create_goods, get_goods_detail
@@ -26,6 +27,8 @@ goods_schema = ns.model('Goods', {
 
 @ns.route('/')
 class GoodsList(Resource):
+    method_decorators = [jwt_required]
+
     @ns.marshal_list_with(goods_schema)
     def get(self):
         return get_goods_list()

@@ -1,3 +1,4 @@
+from flask_jwt_extended import jwt_required
 from flask_restx import Namespace, Resource, reqparse, fields
 
 from app.controller.company import get_company_list, create_company, get_company_detail, delete_company
@@ -24,6 +25,8 @@ company_schema = ns.model('Company', {
 
 @ns.route('/')
 class CompanyList(Resource):
+    method_decorators = [jwt_required]
+
     @ns.marshal_list_with(company_schema)
     def get(self):
         return get_company_list()

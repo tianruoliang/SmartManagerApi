@@ -1,0 +1,27 @@
+POST http://localhost:8000/smart-manager/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "123456"
+}
+
+###
+
+POST http://localhost:8000/smart-manager/auth/refresh
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1OTQ1NDU5ODAsIm5iZiI6MTU5NDU0NTk4MCwianRpIjoiZWE5MjRhNjctMmEwMS00YTM0LWExYWUtZWRlZDVkNmU0NmFkIiwiZXhwIjoxNTk3MTM3OTgwLCJzdWIiOjEsInR5cGUiOiJyZWZyZXNoIn0.F1F745gUeHLZFpihgMs-w48tfdvqvO8Htz3mMk-sePg
+
+###
+
+GET http://localhost:8000/smart-manager/auth/logout
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1OTQ1NDU4NTYsIm5iZiI6MTU5NDU0NTg1NiwianRpIjoiYjZiYzZmYTktMDM5Ny00ZjNjLThkNGQtOWNkZDg2MDQzZDFlIiwiZXhwIjoxNTk0NTQ2NzU2LCJzdWIiOjEsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.F1mdpaSD-Mwph_YSw9uprWe9YCfM9O6VlcfGm452a7E
+
+###
+
+DELETE http://localhost:8000/smart-manager/auth/revoke_access
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1OTQ1NDU4NTYsIm5iZiI6MTU5NDU0NTg1NiwianRpIjoiYjZiYzZmYTktMDM5Ny00ZjNjLThkNGQtOWNkZDg2MDQzZDFlIiwiZXhwIjoxNTk0NTQ2NzU2LCJzdWIiOjEsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.F1mdpaSD-Mwph_YSw9uprWe9YCfM9O6VlcfGm452a7E
+
+###

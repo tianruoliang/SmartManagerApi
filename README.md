@@ -8,8 +8,14 @@
 - flask_restx
 - flask-sqlalchemy
 
+### 命令行
+
+```shell
+flask
+```
+
 ### 运行
 
-``` shell
+```shell
 flask run
 ```
