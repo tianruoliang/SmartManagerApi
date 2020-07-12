@@ -1,3 +1,4 @@
+import datetime
 import os
 
 here = os.path.dirname(__file__)
@@ -8,6 +9,7 @@ class Config:
     DEBUG = True
     JWT_IDENTITY_CLAIM = 'sub'
     JWT_BLACKLIST_ENABLED = True
+    JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(days=30)
     LOG_PATH = os.path.join(project_path, "logs")
     ERROR_INCLUDE_MESSAGE = False
 
@@ -21,9 +23,10 @@ class DevConfig(Config):
 
 class ProdConfig(Config):
     DEBUG = False
-    SECRET_KEY = b"\x94'\xe7\xd8!\xd0-\x80\xdbY*\xa8\xdb\xb9\x98DnMv\xf6\xb8hYa"
-    JWT_SECRET_KEY = b'<\xa3=\xaf\xd9\xa9\x19\xa0\xe7\xedr\xdf\x0c\x1a\xfa\x8f\x8c\xfd\xbeF\xc7\x15a\xe7'
-    SQLALCHEMY_DATABASE_URI = "sqlite:///%s" % os.path.join(project_path, "prod.db")
+    SECRET_KEY = os.getenv("SECRET_KEY", b'S\xe2\x83\xa0\x12\x19o\r\x14\xd2.\xb4y\xbc\xda\x93')
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", b'\xff\xd0\x06\xb3\x15r\x1a\xc2\xaa\xb9H\x9d<\xfd\x0f}')
+    SQLALCHEMY_DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI",
+                                        "sqlite:///%s" % os.path.join(project_path, "prod.db"))
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 

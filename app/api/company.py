@@ -32,10 +32,10 @@ class CompanyList(Resource):
         return get_company_list()
 
     @ns.expect(create_parser)
-    @ns.marshal_with(company_schema, code=201)
+    @ns.marshal_with(company_schema)
     def post(self):
         args = create_parser.parse_args()
-        return create_company(args), 201
+        return create_company(args)
 
 
 @ns.route('/<int:cid>')
@@ -44,6 +44,6 @@ class CompanyDetail(Resource):
     def get(self, cid):
         return get_company_detail(cid)
 
-    @ns.marshal_with(company_schema, code=204)
+    @ns.marshal_with(company_schema)
     def delete(self, cid):
-        return delete_company(cid), 204
+        return delete_company(cid)

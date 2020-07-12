@@ -35,17 +35,17 @@ def login():
     refresh_token = create_refresh_token(identity=user.id)
     add_token_to_database(access_token, current_app.config["JWT_IDENTITY_CLAIM"])
     add_token_to_database(refresh_token, current_app.config["JWT_IDENTITY_CLAIM"])
-    return jsonify(access_token=access_token, refresh_token=refresh_token), 200
+    return jsonify(access_token=access_token, refresh_token=refresh_token)
 
 
-@bp.route('/logout')
+@bp.route('/logout', methods=['POST'])
 @jwt_required
 def logout():
     """登出，清空所有token"""
 
     user_identity = get_jwt_identity()
     remove_token(user_identity)
-    return jsonify({"msg": "logout"}), 200
+    return jsonify({"msg": "logout"})
 
 
 @bp.route('/refresh', methods=['POST'])
@@ -55,7 +55,7 @@ def refresh():
     access_token = create_access_token(identity=current_user)
     ret = {"access_token": access_token}
     add_token_to_database(access_token, current_app.config["JWT_IDENTITY_CLAIM"])
-    return jsonify(ret), 200
+    return jsonify(ret)
 
 
 @bp.route("/revoke_access", methods=["DELETE"])
@@ -64,7 +64,7 @@ def revoke_access_token():
     jti = get_raw_jwt()["jti"]
     user_identity = get_jwt_identity()
     revoke_token(jti, user_identity)
-    return jsonify({"msg": "token revoked"}), 200
+    return jsonify({"msg": "token revoked"})
 
 
 @bp.route("/revoke_refresh", methods=["DELETE"])
@@ -73,7 +73,7 @@ def revoke_refresh_token():
     jti = get_raw_jwt()["jti"]
     user_identity = get_jwt_identity()
     revoke_token(jti, user_identity)
-    return jsonify({"message": "token revoked"}), 200
+    return jsonify({"message": "token revoked"})
 
 
 @jwt.user_loader_callback_loader

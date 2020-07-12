@@ -4,6 +4,7 @@ from flask_restx import Namespace, Resource, reqparse, fields
 from app.controller.goods import get_goods_list, create_goods, get_goods_detail
 
 ns = Namespace("goods", description='Goods Resource')
+
 # parser
 goods_parser = reqparse.RequestParser()
 goods_parser.add_argument("name", type=str, help='名称', location='json')
@@ -34,10 +35,10 @@ class GoodsList(Resource):
         return get_goods_list()
 
     @ns.expect(goods_parser)
-    @ns.marshal_with(goods_schema, code=201)
+    @ns.marshal_with(goods_schema)
     def post(self):
         args = goods_parser.parse_args()
-        return create_goods(args), 201
+        return create_goods(args)
 
 
 @ns.route('/<int:gid>')

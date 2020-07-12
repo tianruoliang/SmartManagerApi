@@ -15,6 +15,33 @@ def init_db():
     Role.init_role()
 
 
+@db_cli.command("faker", short_help="Faker test database.")
+def faker_test_db():
+    import random
+    from app.model.company import Company
+    from app.model.user import User
+
+    db.drop_all()
+    db.create_all()
+    Role.init_role()
+
+    admin_role = Role.query.filter_by(name="admin").first()
+    admin = User(name="测试管理员",
+                 username="admin",
+                 password="123456",
+                 phone="测试电话号码",
+                 role_id=admin_role.id)
+    db.session.add(admin)
+    db.session.commit()
+
+    companies = [Company(name="company-%d" % i,
+                         address="address-%d" % i,
+                         phone="phone-%d" % i,
+                         c_type=random.choice(('供货商', '经销商'))) for i in range(10)]
+    db.session.add_all(companies)
+    db.session.commit()
+
+
 @db_cli.command("create-admin", short_help="Add admin")
 @click.argument('name')
 @click.argument('username')

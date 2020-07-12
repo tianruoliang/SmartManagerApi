@@ -1,7 +1,7 @@
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_current_user
 from flask_restx import Namespace, Resource, reqparse, fields
 
-from app.controller.user import get_user_list, get_user_detail, delete_user
+from app.controller.user import get_user_list
 
 ns = Namespace('user', description='User Resource')
 
@@ -33,13 +33,11 @@ class UserList(Resource):
         return get_user_list()
 
 
-@ns.route('/<uid>')
+@ns.route('/me')
 class UserDetail(Resource):
+    method_decorators = [jwt_required]
 
     @ns.marshal_with(user_schema)
-    def get(self, uid):
-        return get_user_detail(uid)
-
-    @ns.marshal_with(user_schema, code=204)
-    def delete(self, uid):
-        return delete_user(uid), 204
+    def get(self):
+        user = get_current_user()
+        return user.to_dict()
