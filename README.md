@@ -11,11 +11,16 @@
 ### 命令行
 
 ```shell
-flask
+flask --help
 ```
 
 ### 运行
 
+1.初始化数据库
 ```shell
-flask run
+flask db init
+```
+2.创建`admin`角色用户
+```shell
+flask db create-admin {name} {username} {password}
 ```
