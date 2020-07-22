@@ -21,8 +21,8 @@ goods_out_parser.add_argument('number', type=int, help='number', location='json'
 goods_schema = ns.model('Goods', {
     'id': fields.Integer,
     'name': fields.String,
-    'total': fields.Integer,
-    'create_time': fields.DateTime
+    'g_type': fields.String,
+    'total': fields.Integer
 })
 
 

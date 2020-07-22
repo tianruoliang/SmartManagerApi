@@ -1,5 +1,5 @@
-from app.plugin import db
 from app.model.company import Company
+from app.plugin import db
 
 
 def get_company_list():
@@ -24,3 +24,10 @@ def delete_company(cid):
     db.session.delete(company)
     db.session.commit()
     return company.to_dict()
+
+
+def put_company(cid, info):
+    Company.query.filter_by(id=cid).update(info)
+    db.session.commit()
+    db.session.close()
+    return Company.query.get_or_404(cid).to_dict()

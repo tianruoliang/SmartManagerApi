@@ -1,7 +1,10 @@
 from flask_jwt_extended import jwt_required
 from flask_restx import Namespace, Resource, reqparse, fields
 
-from app.controller.company import get_company_list, create_company, get_company_detail, delete_company
+from app.controller.company import (
+    get_company_list, create_company,
+    get_company_detail, delete_company, put_company
+)
 
 ns = Namespace('company', description='Company Resource')
 
@@ -47,3 +50,9 @@ class CompanyDetail(Resource):
     @ns.marshal_with(company_schema)
     def delete(self, cid):
         return delete_company(cid)
+
+    @ns.expect(create_parser)
+    @ns.marshal_with(company_schema)
+    def put(self, cid):
+        args = create_parser.parse_args()
+        return put_company(cid, args)

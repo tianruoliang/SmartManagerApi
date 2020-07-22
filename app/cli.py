@@ -20,6 +20,7 @@ def faker_test_db():
     import random
     from app.model.company import Company
     from app.model.user import User
+    from app.model.goods import Goods
 
     db.drop_all()
     db.create_all()
@@ -39,6 +40,12 @@ def faker_test_db():
                          phone="phone-%d" % i,
                          c_type=random.choice(('供货商', '经销商'))) for i in range(10)]
     db.session.add_all(companies)
+    db.session.commit()
+
+    goods_list = [Goods(name="goods-%d" % i,
+                        g_type="型号-%d" % random.randrange(1, 10),
+                        total=random.randrange(10, 100)) for i in range(100)]
+    db.session.add_all(goods_list)
     db.session.commit()
 
 
