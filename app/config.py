@@ -12,6 +12,7 @@ class Config:
     JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(days=30)
     LOG_PATH = os.path.join(project_path, "logs")
     ERROR_INCLUDE_MESSAGE = False
+    PROPAGATE_EXCEPTIONS = True
 
 
 class DevConfig(Config):
