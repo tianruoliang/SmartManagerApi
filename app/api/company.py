@@ -6,7 +6,7 @@ from app.controller.company import (
     get_company_detail, delete_company, put_company
 )
 
-ns = Namespace('company', description='Company Resource')
+ns = Namespace('company', description='合作公司')
 
 # parser
 create_parser = reqparse.RequestParser()
@@ -17,42 +17,51 @@ create_parser.add_argument('address', type=str, help='联系地址', location='j
 
 # schema
 company_schema = ns.model('Company', {
-    'id': fields.Integer,
-    'name': fields.String,
-    'phone': fields.String,
-    'c_type': fields.String,
-    'address': fields.String,
-    'create_time': fields.DateTime
+    'id': fields.Integer(description='ID'),
+    'name': fields.String(description='公司名'),
+    'phone': fields.String(description='电话'),
+    'c_type': fields.String(description='合作方式'),
+    'address': fields.String(description='地址'),
+    'create_time': fields.DateTime(description='创建时间')
 })
 
 
 @ns.route('/')
 class CompanyList(Resource):
+    """公司"""
     method_decorators = [jwt_required]
 
     @ns.marshal_list_with(company_schema)
     def get(self):
+        """批量获取公司信息"""
         return get_company_list()
 
     @ns.expect(create_parser)
     @ns.marshal_with(company_schema)
     def post(self):
+        """创建公司"""
         args = create_parser.parse_args()
         return create_company(args)
 
 
 @ns.route('/<int:cid>')
 class CompanyDetail(Resource):
+    """公司详情"""
+    method_decorators = [jwt_required]
+
     @ns.marshal_with(company_schema)
     def get(self, cid):
+        """查询公司信息"""
         return get_company_detail(cid)
 
     @ns.marshal_with(company_schema)
     def delete(self, cid):
+        """删除公司"""
         return delete_company(cid)
 
     @ns.expect(create_parser)
     @ns.marshal_with(company_schema)
     def put(self, cid):
+        """更新公司信息"""
         args = create_parser.parse_args()
         return put_company(cid, args)
