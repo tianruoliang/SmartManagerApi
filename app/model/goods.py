@@ -27,14 +27,21 @@ class GoodsIn(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     goods_id = db.Column(db.Integer, db.ForeignKey('goods.id'), nullable=False)
+    staff_id = db.Column(db.Integer, db.ForeignKey('staff.id'), nullable=False)
+    company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=False)
     number = db.Column(db.Integer, nullable=False)
     record = db.Column(db.Text, nullable=True)
     create_time = db.Column(db.DateTime, nullable=False, default=datetime.now())
+
+    staff = db.relationship("Staff", lazy="joined")
+    company = db.relationship("Company", lazy="joined")
 
     def to_dict(self):
         return {
             "id": self.id,
             "goods": self.goods.to_dict(),
+            "staff": self.staff.to_dict(),
+            "company": self.company.to_dict(),
             "number": self.number,
             "record": self.record,
             "create_time": self.create_time
@@ -46,14 +53,20 @@ class GoodsOut(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     goods_id = db.Column(db.Integer, db.ForeignKey('goods.id'), nullable=False)
+    staff_id = db.Column(db.Integer, db.ForeignKey('staff.id'), nullable=False)
+    company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=False)
     number = db.Column(db.Integer, nullable=False)
     record = db.Column(db.Text, nullable=True)
     create_time = db.Column(db.DateTime, nullable=False, default=datetime.now())
+
+    staff = db.relationship("Staff", lazy="joined")
+    company = db.relationship("Company", lazy="joined")
 
     def to_dict(self):
         return {
             "id": self.id,
             "goods": self.goods.to_dict(),
+            "staff": self.staff.to_dict(),
             "number": self.number,
             "record": self.record,
             "create_time": self.create_time
