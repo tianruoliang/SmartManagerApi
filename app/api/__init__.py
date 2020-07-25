@@ -9,7 +9,7 @@ from .role import ns as role_ns
 from .user import ns as user_ns
 from .staff import ns as staff_ns
 
-bp = Blueprint('api', __name__, url_prefix='/api')
+bp = Blueprint('api', __name__, url_prefix='/smart-manager/api')
 
 authorizations = {
     'Bearer Auth': {
