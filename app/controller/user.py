@@ -1,26 +1,24 @@
-from app.plugin import db
 from app.model.user import User
+from app.plugin import db
 
 
 def get_user_list():
-    data = User.query.all()
-    return [d.to_dict() for d in data]
+    return User.query.all()
 
 
 def get_user_detail(uid):
-    user = User.query.get_or_404(uid)
-    return user.to_dict()
+    return User.query.get_or_404(uid)
 
 
 def create_user(info):
     user = User(**info)
     db.session.add(user)
     db.session.commit()
-    return user.to_dict()
+    return user
 
 
 def delete_user(uid):
     user = User.query.get_or_404(uid)
     db.session.delete(user)
     db.session.commit()
-    return user.to_dict()
+    return user

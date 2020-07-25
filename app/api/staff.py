@@ -23,7 +23,7 @@ staff_schema = ns.model('Staff', {
 @ns.route('/')
 class StaffList(Resource):
     """员工"""
-    method_decorators = [jwt_required]
+    # method_decorators = [jwt_required]
 
     @ns.marshal_list_with(staff_schema)
     def get(self):
@@ -41,7 +41,7 @@ class StaffList(Resource):
 @ns.route('/<int:sid>')
 class StaffDetail(Resource):
     """员工详情"""
-    method_decorators = [jwt_required]
+    # method_decorators = [jwt_required]
 
     @ns.marshal_with(staff_schema)
     def get(self, sid):

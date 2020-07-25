@@ -6,8 +6,8 @@ from werkzeug.exceptions import HTTPException
 from .company import ns as company_ns
 from .goods import ns as goods_ns
 from .role import ns as role_ns
-from .user import ns as user_ns
 from .staff import ns as staff_ns
+from .user import ns as user_ns
 
 bp = Blueprint('api', __name__, url_prefix='/smart-manager/api')
 
@@ -34,6 +34,8 @@ def api_http_exception(error):
         f"[data]: {request.form}"
     )
     return error.data, error.code
+
+
 
 
 api.add_namespace(user_ns)

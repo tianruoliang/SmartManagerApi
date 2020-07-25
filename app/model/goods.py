@@ -39,9 +39,8 @@ class GoodsIn(db.Model):
     def to_dict(self):
         return {
             "id": self.id,
-            "goods": self.goods.to_dict(),
-            "staff": self.staff.to_dict(),
-            "company": self.company.to_dict(),
+            "staff": self.staff.name,
+            "company": self.company.name,
             "number": self.number,
             "record": self.record,
             "create_time": self.create_time
@@ -65,8 +64,8 @@ class GoodsOut(db.Model):
     def to_dict(self):
         return {
             "id": self.id,
-            "goods": self.goods.to_dict(),
-            "staff": self.staff.to_dict(),
+            "staff": self.staff.name,
+            "company": self.company.name,
             "number": self.number,
             "record": self.record,
             "create_time": self.create_time

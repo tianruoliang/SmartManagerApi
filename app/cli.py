@@ -21,6 +21,7 @@ def faker_test_db():
     from app.model.company import Company
     from app.model.user import User
     from app.model.goods import Goods
+    from app.model.staff import Staff
 
     db.drop_all()
     db.create_all()
@@ -46,6 +47,12 @@ def faker_test_db():
                         g_type="型号-%d" % random.randrange(1, 10),
                         total=random.randrange(10, 100)) for i in range(100)]
     db.session.add_all(goods_list)
+    db.session.commit()
+
+    staffs = [Staff(name="staff-%d" % i,
+                    gender=random.choice(('男', '女')),
+                    phone="phone-%d" % i) for i in range(100)]
+    db.session.add_all(staffs)
     db.session.commit()
 
 

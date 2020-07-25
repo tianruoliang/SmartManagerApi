@@ -3,24 +3,23 @@ from app.plugin import db
 
 
 def get_staff_list():
-    data = Staff.query.all()
-    return [d.to_dict() for d in data]
+    return Staff.query.all()
 
 
 def create_staff(info):
     staff = Staff(**info)
     db.session.add(staff)
     db.session.commit()
-    return staff.to_dict()
+    return staff
 
 
 def get_staff_detail(sid):
     staff = Staff.query.get_or_404(sid)
-    return staff.to_dict()
+    return staff
 
 
 def delete_staff_detail(sid):
     staff = Staff.query.get_or_404(sid)
     db.session.delete(staff)
     db.session.commit()
-    return staff.to_dict()
+    return staff

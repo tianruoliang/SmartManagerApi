@@ -1,6 +1,7 @@
 from flask_jwt_extended import jwt_required
 from flask_restx import Namespace, Resource, reqparse, fields
 
+from app.api._parser import paginate_parser, paginate_schema_base
 from app.controller.company import (
     get_company_list, create_company,
     get_company_detail, delete_company, put_company
@@ -24,6 +25,9 @@ company_schema = ns.model('Company', {
     'address': fields.String(description='地址'),
     'create_time': fields.DateTime(description='创建时间')
 })
+paginate_schema = ns.clone('CompanyPaginate', paginate_schema_base, {
+    'items': fields.List(fields.Nested(company_schema), description='数据')
+})
 
 
 @ns.route('/')
@@ -31,10 +35,12 @@ class CompanyList(Resource):
     """公司"""
     method_decorators = [jwt_required]
 
-    @ns.marshal_list_with(company_schema)
+    @ns.expect(paginate_parser)
+    @ns.marshal_list_with(paginate_schema)
     def get(self):
         """批量获取公司信息"""
-        return get_company_list()
+        page_info = paginate_parser.parse_args()
+        return get_company_list(page_info)
 
     @ns.expect(create_parser)
     @ns.marshal_with(company_schema)
