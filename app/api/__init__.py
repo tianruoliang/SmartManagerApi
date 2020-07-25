@@ -7,8 +7,9 @@ from .company import ns as company_ns
 from .goods import ns as goods_ns
 from .role import ns as role_ns
 from .user import ns as user_ns
+from .staff import ns as staff_ns
 
-bp = Blueprint('api', __name__, url_prefix='/smart-manager/api')
+bp = Blueprint('api', __name__, url_prefix='/api')
 
 authorizations = {
     'Bearer Auth': {
@@ -39,3 +40,4 @@ api.add_namespace(user_ns)
 api.add_namespace(company_ns)
 api.add_namespace(role_ns)
 api.add_namespace(goods_ns)
+api.add_namespace(staff_ns)
