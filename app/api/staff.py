@@ -1,7 +1,11 @@
 from flask_jwt_extended import jwt_required
 from flask_restx import Namespace, Resource, fields, reqparse
 
-from app.controller.staff import get_staff_list, create_staff, get_staff_detail, delete_staff_detail
+from app.api._parser import paginate_parser, paginate_schema_base
+from app.controller.staff import (
+    get_staff_list, create_staff, get_staff_all,
+    get_staff_detail, delete_staff_detail
+)
 
 ns = Namespace("staff", description="员工")
 
@@ -18,17 +22,23 @@ staff_schema = ns.model('Staff', {
     'gender': fields.String(description='性别'),
     'phone': fields.String(description='电话')
 })
+paginate_schema = ns.clone('StaffPaginate', paginate_schema_base, {
+    'items': fields.List(fields.Nested(staff_schema), description='数据')
+})
 
 
 @ns.route('/')
 class StaffList(Resource):
-    """员工"""
-    # method_decorators = [jwt_required]
+    """分页员工"""
 
-    @ns.marshal_list_with(staff_schema)
+    method_decorators = [jwt_required]
+
+    @ns.expect(paginate_parser)
+    @ns.marshal_with(paginate_schema)
     def get(self):
         """批量查询员工"""
-        return get_staff_list()
+        page_info = paginate_parser.parse_args()
+        return get_staff_list(page_info)
 
     @ns.expect(staff_parser)
     @ns.marshal_with(staff_schema)
@@ -38,10 +48,22 @@ class StaffList(Resource):
         return create_staff(args)
 
 
+@ns.route('/all')
+class StaffAll(Resource):
+    """全体员工"""
+
+    method_decorators = [jwt_required]
+
+    @ns.marshal_list_with(staff_schema)
+    def get(self):
+        """批量查询员工"""
+        return get_staff_all()
+
+
 @ns.route('/<int:sid>')
 class StaffDetail(Resource):
     """员工详情"""
-    # method_decorators = [jwt_required]
+    method_decorators = [jwt_required]
 
     @ns.marshal_with(staff_schema)
     def get(self, sid):

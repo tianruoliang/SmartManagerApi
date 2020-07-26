@@ -39,7 +39,7 @@ def faker_test_db():
     companies = [Company(name="company-%d" % i,
                          address="address-%d" % i,
                          phone="phone-%d" % i,
-                         c_type=random.choice(('供货商', '经销商'))) for i in range(10)]
+                         c_type=random.choice(('供货商', '经销商'))) for i in range(100)]
     db.session.add_all(companies)
     db.session.commit()
 

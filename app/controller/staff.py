@@ -2,8 +2,13 @@ from app.model.staff import Staff
 from app.plugin import db
 
 
-def get_staff_list():
-    return Staff.query.all()
+def get_staff_all():
+    return [staff.to_dict() for staff in Staff.query.all()]
+
+
+def get_staff_list(page_info):
+    pagination = Staff.query.paginate(**page_info)
+    return pagination
 
 
 def create_staff(info):

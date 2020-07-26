@@ -2,7 +2,6 @@ from datetime import datetime
 
 from app.plugin import db
 
-
 class Goods(db.Model):
     """库存"""
 
@@ -10,8 +9,8 @@ class Goods(db.Model):
     name = db.Column(db.String(80), unique=False, nullable=False)
     g_type = db.Column(db.String(80), unique=False, nullable=False)
     total = db.Column(db.Integer, nullable=False, default=0)
-    goods_in = db.relationship('GoodsIn', backref='goods', lazy=True)
-    goods_out = db.relationship('GoodsOut', backref='goods', lazy=True)
+    goods_in = db.relationship('GoodsIn', backref='goods', lazy='dynamic', cascade='all, delete-orphan')
+    goods_out = db.relationship('GoodsOut', backref='goods', lazy='dynamic', cascade='all, delete-orphan')
 
     def to_dict(self):
         return {
@@ -26,7 +25,7 @@ class GoodsIn(db.Model):
     """进库记录"""
 
     id = db.Column(db.Integer, primary_key=True)
-    goods_id = db.Column(db.Integer, db.ForeignKey('goods.id'), nullable=False)
+    goods_id = db.Column(db.Integer, db.ForeignKey('goods.id', ondelete='CASCADE'), nullable=False)
     staff_id = db.Column(db.Integer, db.ForeignKey('staff.id'), nullable=False)
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=False)
     number = db.Column(db.Integer, nullable=False)
@@ -51,7 +50,7 @@ class GoodsOut(db.Model):
     """出库记录"""
 
     id = db.Column(db.Integer, primary_key=True)
-    goods_id = db.Column(db.Integer, db.ForeignKey('goods.id'), nullable=False)
+    goods_id = db.Column(db.Integer, db.ForeignKey('goods.id', ondelete='CASCADE'), nullable=False)
     staff_id = db.Column(db.Integer, db.ForeignKey('staff.id'), nullable=False)
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=False)
     number = db.Column(db.Integer, nullable=False)

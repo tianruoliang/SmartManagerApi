@@ -5,7 +5,7 @@ from app.api._parser import paginate_parser, paginate_schema_base
 from app.controller.goods import (
     get_goods_list, create_goods, get_goods_detail,
     get_goods_in_list, get_goods_out_list,
-    create_goods_in, create_goods_out
+    create_goods_in, create_goods_out, delete_goods
 )
 
 ns = Namespace("goods", description='货品')
@@ -37,8 +37,11 @@ goods_action_schema = ns.model('GoodsAction', {
     'staff': fields.String(description='经手人'),
     'company': fields.String(description='公司')
 })
-paginate_schema = ns.clone('GoodsPaginate', paginate_schema_base, {
+goods_paginate_schema = ns.clone('GoodsPaginate', paginate_schema_base, {
     'items': fields.List(fields.Nested(goods_schema), description='数据')
+})
+goods_action_paginate_schema = ns.clone('GoodsActionPaginate', paginate_schema_base, {
+    'items': fields.List(fields.Nested(goods_action_schema), description='数据')
 })
 
 
@@ -49,7 +52,7 @@ class GoodsList(Resource):
     method_decorators = [jwt_required]
 
     @ns.expect(paginate_parser)
-    @ns.marshal_list_with(paginate_schema)
+    @ns.marshal_with(goods_paginate_schema)
     def get(self):
         """获取货品列表"""
         page_info = paginate_parser.parse_args()
@@ -74,6 +77,11 @@ class GoodsDetail(Resource):
         """查询货品详情"""
         return get_goods_detail(gid)
 
+    @ns.marshal_with(goods_schema)
+    def delete(self, gid):
+        """删除货品"""
+        return delete_goods(gid)
+
 
 @ns.route('/<int:gid>/<string:action>')
 class GoodsAction(Resource):
@@ -81,14 +89,16 @@ class GoodsAction(Resource):
 
     method_decorators = [jwt_required]
 
-    @ns.marshal_list_with(goods_action_schema)
+    @ns.expect(paginate_parser)
+    @ns.marshal_with(goods_action_paginate_schema)
     @ns.doc(params={'gid': '货品ID', 'action': 'in（入库）out（出库）'})
     def get(self, gid, action):
         """获取货品出/入库记录，action取值 in（入库）out（出库）"""
+        page_info = paginate_parser.parse_args()
         if action == 'in':
-            return get_goods_in_list(gid)
+            return get_goods_in_list(gid, page_info)
         else:
-            return get_goods_out_list(gid)
+            return get_goods_out_list(gid, page_info)
 
     @ns.expect(goods_action_parser)
     @ns.marshal_with(goods_action_schema)

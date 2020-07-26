@@ -73,7 +73,7 @@ def revoke_refresh_token():
     jti = get_raw_jwt()["jti"]
     user_identity = get_jwt_identity()
     revoke_token(jti, user_identity)
-    return jsonify({"message": "token revoked"})
+    return jsonify({"msg": "token revoked"})
 
 
 @jwt.user_loader_callback_loader

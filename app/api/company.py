@@ -3,7 +3,7 @@ from flask_restx import Namespace, Resource, reqparse, fields
 
 from app.api._parser import paginate_parser, paginate_schema_base
 from app.controller.company import (
-    get_company_list, create_company,
+    get_company_list, create_company, get_company_all,
     get_company_detail, delete_company, put_company
 )
 
@@ -36,7 +36,7 @@ class CompanyList(Resource):
     method_decorators = [jwt_required]
 
     @ns.expect(paginate_parser)
-    @ns.marshal_list_with(paginate_schema)
+    @ns.marshal_with(paginate_schema)
     def get(self):
         """批量获取公司信息"""
         page_info = paginate_parser.parse_args()
@@ -48,6 +48,18 @@ class CompanyList(Resource):
         """创建公司"""
         args = create_parser.parse_args()
         return create_company(args)
+
+
+@ns.route('/all')
+class CompanyAll(Resource):
+    """所有公司"""
+
+    method_decorators = [jwt_required]
+
+    @ns.marshal_list_with(company_schema)
+    def get(self):
+        """获取所有公司信息"""
+        return get_company_all()
 
 
 @ns.route('/<int:cid>')

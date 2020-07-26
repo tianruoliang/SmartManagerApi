@@ -1,5 +1,4 @@
-from flask import Blueprint
-from flask import request
+from flask import Blueprint, request, jsonify
 from flask_restx import Api
 from werkzeug.exceptions import HTTPException
 
@@ -29,13 +28,16 @@ api = Api(
 @api.errorhandler(HTTPException)
 def api_http_exception(error):
     api.logger.error(
-        f"{error.data}\n[remote_addr]: {request.remote_addr}\n"
+        f"[remote_addr]: {request.remote_addr}\n"
         f"[method]: {request.method}\n[url]: {request.url}\n"
-        f"[data]: {request.form}"
+        f"[json_data]: {request.json}"
     )
-    return error.data, error.code
+    raise error
 
 
+@bp.errorhandler(HTTPException)
+def api_bp_error(error: HTTPException):
+    return jsonify(msg=error.description), error.code
 
 
 api.add_namespace(user_ns)

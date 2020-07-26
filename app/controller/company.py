@@ -2,6 +2,10 @@ from app.model.company import Company
 from app.plugin import db
 
 
+def get_company_all():
+    return [company.to_dict() for company in Company.query.all()]
+
+
 def get_company_list(page_info):
     pagination = Company.query.paginate(**page_info)
     return pagination
