@@ -23,6 +23,7 @@ company_schema = ns.model('Company', {
     'phone': fields.String(description='电话'),
     'c_type': fields.String(description='合作方式'),
     'address': fields.String(description='地址'),
+    'active': fields.Boolean(description='状态'),
     'create_time': fields.DateTime(description='创建时间')
 })
 paginate_schema = ns.clone('CompanyPaginate', paginate_schema_base, {

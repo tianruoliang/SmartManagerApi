@@ -4,6 +4,7 @@ from werkzeug.exceptions import HTTPException
 
 from .company import ns as company_ns
 from .goods import ns as goods_ns
+from .goods_record import ns as goods_record_ns
 from .role import ns as role_ns
 from .staff import ns as staff_ns
 from .user import ns as user_ns
@@ -45,3 +46,4 @@ api.add_namespace(company_ns)
 api.add_namespace(role_ns)
 api.add_namespace(goods_ns)
 api.add_namespace(staff_ns)
+api.add_namespace(goods_record_ns)

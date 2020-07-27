@@ -44,8 +44,7 @@ def faker_test_db():
     db.session.commit()
 
     goods_list = [Goods(name="goods-%d" % i,
-                        g_type="型号-%d" % random.randrange(1, 10),
-                        total=random.randrange(10, 100)) for i in range(100)]
+                        g_type="型号-%d" % random.randrange(1, 10)) for i in range(100)]
     db.session.add_all(goods_list)
     db.session.commit()
 

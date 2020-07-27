@@ -25,7 +25,8 @@ def create_company(info):
 
 def delete_company(cid):
     company = Company.query.get_or_404(cid)
-    db.session.delete(company)
+    company.active = False
+    db.session.add(company)
     db.session.commit()
     return company
 

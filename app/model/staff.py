@@ -6,6 +6,7 @@ class Staff(db.Model):
     name = db.Column(db.String(80), nullable=False)
     gender = db.Column(db.String(10))
     phone = db.Column(db.String(100))
+    active = db.Column(db.Boolean, default=True)
 
     def to_dict(self):
         return {

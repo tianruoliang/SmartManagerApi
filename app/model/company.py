@@ -11,6 +11,7 @@ class Company(db.Model):
     address = db.Column(db.String(200), unique=False, nullable=False)
     phone = db.Column(db.String(20), unique=False, nullable=False)
     c_type = db.Column(db.String(10), nullable=False)
+    active = db.Column(db.Boolean, default=True)
     create_time = db.Column(db.DateTime, nullable=False, default=datetime.now())
 
     def to_dict(self):

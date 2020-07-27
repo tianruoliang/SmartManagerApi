@@ -20,7 +20,8 @@ staff_schema = ns.model('Staff', {
     'id': fields.Integer(description='ID'),
     'name': fields.String(description='姓名'),
     'gender': fields.String(description='性别'),
-    'phone': fields.String(description='电话')
+    'phone': fields.String(description='电话'),
+    'active': fields.Boolean(description='状态'),
 })
 paginate_schema = ns.clone('StaffPaginate', paginate_schema_base, {
     'items': fields.List(fields.Nested(staff_schema), description='数据')

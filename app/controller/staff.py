@@ -25,6 +25,7 @@ def get_staff_detail(sid):
 
 def delete_staff_detail(sid):
     staff = Staff.query.get_or_404(sid)
-    db.session.delete(staff)
+    staff.active = False
+    db.session.add(staff)
     db.session.commit()
     return staff
