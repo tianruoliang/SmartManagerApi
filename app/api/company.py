@@ -12,17 +12,21 @@ ns = Namespace('company', description='合作公司')
 # parser
 create_parser = reqparse.RequestParser()
 create_parser.add_argument('name', type=str, help='公司名', location='json')
+create_parser.add_argument('person', type=str, help='联系人', location='json')
 create_parser.add_argument('c_type', help='公司类型', location='json')
 create_parser.add_argument('phone', type=str, help='联系电话', location='json')
 create_parser.add_argument('address', type=str, help='联系地址', location='json')
+create_parser.add_argument('record', type=str, help='备注', location='json')
 
 # schema
 company_schema = ns.model('Company', {
     'id': fields.Integer(description='ID'),
     'name': fields.String(description='公司名'),
+    'person': fields.String(description='联系人'),
     'phone': fields.String(description='电话'),
     'c_type': fields.String(description='合作方式'),
     'address': fields.String(description='地址'),
+    'record': fields.String(description='备注'),
     'active': fields.Boolean(description='状态'),
     'create_time': fields.DateTime(description='创建时间')
 })

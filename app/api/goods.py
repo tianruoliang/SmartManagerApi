@@ -4,7 +4,7 @@ from flask_restx import Namespace, Resource, reqparse, fields
 from app.api._parser import paginate_parser, paginate_schema_base
 from app.controller.goods import (
     get_goods_list, create_goods, get_goods_detail,
-    delete_goods
+    delete_goods, get_goods_all
 )
 
 ns = Namespace("goods", description='货品')
@@ -47,6 +47,18 @@ class GoodsList(Resource):
         """创建货品"""
         args = goods_parser.parse_args()
         return create_goods(args)
+
+
+@ns.route('/all')
+class GoodsAll(Resource):
+    """所有货品"""
+
+    method_decorators = [jwt_required]
+
+    @ns.marshal_list_with(goods_schema)
+    def get(self):
+        """获取所有货品信息"""
+        return get_goods_all()
 
 
 @ns.route('/<int:gid>')

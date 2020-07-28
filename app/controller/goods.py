@@ -2,6 +2,9 @@ from app.model.goods import Goods
 from app.plugin import db
 
 
+def get_goods_all():
+    return [goods.to_dict() for goods in Goods.query.all()]
+
 def get_goods_list(page_info):
     pagination = Goods.query.paginate(**page_info)
     return pagination

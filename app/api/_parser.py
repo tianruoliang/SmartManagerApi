@@ -1,5 +1,17 @@
 from flask_restx import reqparse, Model, fields
 
+
+class Parser(reqparse.RequestParser):
+    def parse_args(self, req=None, strict=False, delete_none=False):
+        _result = super(Parser, self).parse_args(req=None, strict=False)
+        result = _result.copy()
+        if delete_none:
+            for k in _result:
+                if _result[k] is None:
+                    result.pop(k)
+        return result
+
+
 # paginate parser
 paginate_parser = reqparse.RequestParser()
 paginate_parser.add_argument("page", type=int, required=False, help='当前页')

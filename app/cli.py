@@ -1,4 +1,5 @@
 import click
+from faker import Faker
 from flask.cli import AppGroup
 
 from app.controller.user import create_user
@@ -27,6 +28,8 @@ def faker_test_db():
     db.create_all()
     Role.init_role()
 
+    faker = Faker(locale='zh_CN')
+
     admin_role = Role.query.filter_by(name="admin").first()
     admin = User(name="测试管理员",
                  username="admin",
@@ -36,21 +39,24 @@ def faker_test_db():
     db.session.add(admin)
     db.session.commit()
 
-    companies = [Company(name="company-%d" % i,
-                         address="address-%d" % i,
-                         phone="phone-%d" % i,
-                         c_type=random.choice(('供货商', '经销商'))) for i in range(100)]
+    companies = [Company(name=faker.company(),
+                         address=faker.address(),
+                         phone=faker.phone_number(),
+                         person=faker.name(),
+                         c_type=random.choice(('供货商', '经销商')),
+                         record=faker.sentence(),
+                         create_time=faker.date_time()) for _ in range(1000)]
     db.session.add_all(companies)
     db.session.commit()
 
-    goods_list = [Goods(name="goods-%d" % i,
-                        g_type="型号-%d" % random.randrange(1, 10)) for i in range(100)]
+    goods_list = [Goods(name=faker.word(),
+                        g_type="型号-%d" % random.randrange(1, 10)) for _ in range(1000)]
     db.session.add_all(goods_list)
     db.session.commit()
 
-    staffs = [Staff(name="staff-%d" % i,
+    staffs = [Staff(name=faker.name(),
                     gender=random.choice(('男', '女')),
-                    phone="phone-%d" % i) for i in range(100)]
+                    phone=faker.phone_number()) for _ in range(50)]
     db.session.add_all(staffs)
     db.session.commit()
 

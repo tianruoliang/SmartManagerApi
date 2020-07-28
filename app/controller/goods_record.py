@@ -1,11 +1,10 @@
 from flask import abort
-
 from app.model.goods import Goods, GoodsRecord
 from app.plugin import db
 
 
-def get_goods_record_list(page_info):
-    pagination = GoodsRecord.query.paginate(**page_info)
+def get_goods_record_list(page_info, condition):
+    pagination = GoodsRecord.query.filter_by(**condition).paginate(**page_info)
     pagination.items = [x.to_dict() for x in pagination.items]
     return pagination
 
